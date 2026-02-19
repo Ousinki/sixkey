@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "name": "Chinese Current Braille (现行盲文)",
+    "standard": "GB/T 15720-1995",
+    "description": "Phonetic braille based on Hanyu Pinyin. Each syllable = initial(声母) + final(韵母) + optional tone(声调).",
+    "source": "liblouis zh-chn.ctb, GB/T 15720-1995",
+    "note": "In current standard, j/q/x share dot patterns with g/k/h because they are predictable from the following final."
+  },
+  "initials": {
+    "b":   { "dots": [1, 2],       "unicode": "U+2803", "char": "⠃" },
+    "p":   { "dots": [1, 2, 3, 4], "unicode": "U+280F", "char": "⠏" },
+    "m":   { "dots": [1, 3, 4],    "unicode": "U+280D", "char": "⠍" },
+    "f":   { "dots": [1, 2, 4],    "unicode": "U+280B", "char": "⠋" },
+    "d":   { "dots": [1, 4, 5],    "unicode": "U+2819", "char": "⠙" },
+    "t":   { "dots": [2, 3, 4, 5], "unicode": "U+281E", "char": "⠞" },
+    "n":   { "dots": [1, 3, 4, 5], "unicode": "U+281D", "char": "⠝" },
+    "l":   { "dots": [1, 2, 3],    "unicode": "U+2807", "char": "⠇" },
+    "g":   { "dots": [1, 2, 4, 5], "unicode": "U+281B", "char": "⠛" },
+    "k":   { "dots": [1, 3],       "unicode": "U+2805", "char": "⠅" },
+    "h":   { "dots": [1, 2, 5],    "unicode": "U+2813", "char": "⠓" },
+    "j":   { "dots": [1, 2, 4, 5], "unicode": "U+281B", "char": "⠛", "note": "Same as g, distinguished by following final" },
+    "q":   { "dots": [1, 3],       "unicode": "U+2805", "char": "⠅", "note": "Same as k, distinguished by following final" },
+    "x":   { "dots": [1, 2, 5],    "unicode": "U+2813", "char": "⠓", "note": "Same as h, distinguished by following final" },
+    "zh":  { "dots": [1, 2, 3, 4, 5], "unicode": "U+281F", "char": "⠟" },
+    "ch":  { "dots": [1, 2, 3, 5], "unicode": "U+2817", "char": "⠗" },
+    "sh":  { "dots": [1, 2, 3, 4], "unicode": "U+280F", "char": "⠏", "note": "Context determines sh vs p" },
+    "r":   { "dots": [1, 2, 3, 5], "unicode": "U+2817", "char": "⠗", "note": "Context determines r vs ch" },
+    "z":   { "dots": [1, 3, 5, 6], "unicode": "U+2835", "char": "⠵" },
+    "c":   { "dots": [1, 4],       "unicode": "U+2809", "char": "⠉" },
+    "s":   { "dots": [2, 3, 4],    "unicode": "U+280E", "char": "⠎" }
+  },
+  "finals": {
+    "a":    { "dots": [1, 5],          "unicode": "U+2811", "char": "⠑" },
+    "o":    { "dots": [1, 3, 5],       "unicode": "U+2815", "char": "⠕" },
+    "e":    { "dots": [1, 5, 6],       "unicode": "U+2831", "char": "⠱" },
+    "er":   { "dots": [1, 2, 4, 5, 6], "unicode": "U+283B", "char": "⠻" },
+    "ai":   { "dots": [2, 4, 6],       "unicode": "U+282A", "char": "⠪" },
+    "ei":   { "dots": [2, 3, 4, 6],    "unicode": "U+282E", "char": "⠮" },
+    "ao":   { "dots": [2, 3, 5],       "unicode": "U+2816", "char": "⠖" },
+    "ou":   { "dots": [1, 2, 4, 6],    "unicode": "U+282B", "char": "⠫" },
+    "an":   { "dots": [2, 4, 5, 6],    "unicode": "U+283A", "char": "⠺" },
+    "en":   { "dots": [2, 5],          "unicode": "U+2812", "char": "⠒" },
+    "ang":  { "dots": [2, 3, 5, 6],    "unicode": "U+2836", "char": "⠶" },
+    "eng":  { "dots": [2, 3, 4, 5, 6], "unicode": "U+283E", "char": "⠾" },
+    "ong":  { "dots": [2, 3, 4, 5],    "unicode": "U+281E", "char": "⠞", "note": "Context determines ong vs t" },
+    "i":    { "dots": [2, 4],          "unicode": "U+280A", "char": "⠊" },
+    "ia":   { "dots": [2, 4, 5],       "unicode": "U+281A", "char": "⠚" },
+    "ie":   { "dots": [1, 2, 6],       "unicode": "U+2823", "char": "⠣" },
+    "iao":  { "dots": [1, 4, 6],       "unicode": "U+2829", "char": "⠩" },
+    "iou":  { "dots": [1, 3, 6],       "unicode": "U+2825", "char": "⠥" },
+    "ian":  { "dots": [1, 4, 5, 6],    "unicode": "U+2839", "char": "⠹" },
+    "in":   { "dots": [1, 6],          "unicode": "U+2821", "char": "⠡" },
+    "iang": { "dots": [2, 4, 6],       "unicode": "U+282A", "char": "⠪", "note": "Same as ai, context-dependent" },
+    "ing":  { "dots": [1, 4, 6],       "unicode": "U+2829", "char": "⠩", "note": "Same as iao, context-dependent" },
+    "iong": { "dots": [1, 3, 4, 6],    "unicode": "U+282D", "char": "⠭" },
+    "u":    { "dots": [1, 3, 4, 5, 6], "unicode": "U+283D", "char": "⠽" },
+    "ua":   { "dots": [1, 2, 3, 6],    "unicode": "U+2827", "char": "⠧" },
+    "uo":   { "dots": [1, 2, 3, 5, 6], "unicode": "U+2837", "char": "⠷" },
+    "uai":  { "dots": [1, 3, 5, 6],    "unicode": "U+2835", "char": "⠵", "note": "Same as z, context-dependent" },
+    "uei":  { "dots": [2, 3, 6],       "unicode": "U+2826", "char": "⠦" },
+    "uan":  { "dots": [2, 5, 6],       "unicode": "U+2832", "char": "⠲" },
+    "uen":  { "dots": [1, 2, 5, 6],    "unicode": "U+2833", "char": "⠳" },
+    "uang": { "dots": [2, 6],          "unicode": "U+2822", "char": "⠢" },
+    "ueng": { "dots": [2, 3, 4, 6],    "unicode": "U+282E", "char": "⠮", "note": "Same as ei, context-dependent" },
+    "v":    { "dots": [1, 2, 3, 4, 5, 6], "unicode": "U+283F", "char": "⠿", "note": "ü vowel" },
+    "ve":   { "dots": [1, 2, 3, 4, 6], "unicode": "U+282F", "char": "⠯", "note": "üe" },
+    "van":  { "dots": [1, 3, 4, 5, 6], "unicode": "U+283D", "char": "⠽", "note": "üan, same as u, context-dependent" },
+    "vn":   { "dots": [2, 3, 5, 6],    "unicode": "U+2836", "char": "⠶", "note": "ün, same as ang, context-dependent" }
+  },
+  "tones": {
+    "1": { "dots": [1],    "unicode": "U+2801", "char": "⠁", "name": "阴平 (flat)" },
+    "2": { "dots": [3],    "unicode": "U+2804", "char": "⠄", "name": "阳平 (rising)" },
+    "3": { "dots": [2, 3], "unicode": "U+2806", "char": "⠆", "name": "上声 (dipping)" },
+    "4": { "dots": [3, 6], "unicode": "U+2824", "char": "⠤", "name": "去声 (falling)" }
+  },
+  "punctuation": {
+    "。": { "dots": [5, 2, 3],       "unicode": "U+2816", "char": "⠖", "name": "句号" },
+    "，": { "dots": [5],             "unicode": "U+2810", "char": "⠐", "name": "逗号" },
+    "？": { "dots": [5, 3],          "unicode": "U+2814", "char": "⠔", "name": "问号" },
+    "！": { "dots": [5, 6, 2],       "unicode": "U+2832", "char": "⠲", "name": "叹号" },
+    "：": { "dots": [6, 3],          "unicode": "U+2824", "char": "⠤", "name": "冒号" },
+    "；": { "dots": [5, 6],          "unicode": "U+2830", "char": "⠰", "name": "分号" },
+    """:  { "dots": [5, 6, 3],       "unicode": "U+2834", "char": "⠴", "name": "左引号" },
+    """:  { "dots": [3, 5, 2, 3],    "unicode": "U+2816", "char": "⠖", "name": "右引号" },
+    "《": { "dots": [5, 3, 6],       "unicode": "U+2834", "char": "⠴", "name": "左书名号" },
+    "》": { "dots": [3, 6, 2],       "unicode": "U+2826", "char": "⠦", "name": "右书名号" },
+    "（": { "dots": [5, 6, 3, 6],    "unicode": "U+2834", "char": "⠴", "name": "左括号" },
+    "）": { "dots": [3, 5, 2, 3],    "unicode": "U+2816", "char": "⠖", "name": "右括号" }
+  },
+  "examples": {
+    "天 (tiān)": {
+      "pinyin": "tian",
+      "braille": "⠞⠹",
+      "breakdown": ["t → ⠞ (dots 2345)", "ian → ⠹ (dots 1456)"]
+    },
+    "空 (kōng)": {
+      "pinyin": "kong",
+      "braille": "⠅⠞",
+      "breakdown": ["k → ⠅ (dots 13)", "ong → ⠞ (dots 2345)"]
+    },
+    "你好 (nǐ hǎo)": {
+      "pinyin": "ni hao",
+      "braille": "⠝⠊ ⠓⠖",
+      "breakdown": ["n → ⠝", "i → ⠊", "h → ⠓", "ao → ⠖"]
+    }
+  }
+}
