@@ -4,17 +4,23 @@
 # SixKey 盲文打字 (Braille to Text)
 # 使用 SDF-JKL 并击输入盲文，输出中文
 #
+# 键位：S=3点 D=2点 F=1点 J=4点 K=5点 L=6点
+# 并击 = 同时按下多个键再同时松开
+#
+# 每个并击产生一个拼音片段（声母或韵母），
+# 连续两次并击组成完整拼音音节，进入候选。
 
 schema:
   schema_id: sixkey_braille
   name: "SixKey 盲文打字"
-  version: "1.0"
+  version: "2.0"
   author:
     - SixKey Project
   description: |
     使用 SDF-JKL 六键并击输入盲文。
     S=3点 D=2点 F=1点 J=4点 K=5点 L=6点
     并击产生拼音，通过拼音输入中文。
+    技巧：所有键必须同时按下再同时松开！
   dependencies:
     - luna_pinyin
 
@@ -51,90 +57,82 @@ engine:
     - uniquifier
 
 chord_composer:
-  # 并击所使用的按键，按字母表排序定义
+  # 并击按键表，按此顺序排列并击编码
   # 击键虽有先后，形成并击时一律按此顺序排列
   alphabet: "sdfjkl"
-  # 将并击编码转换为拼音的规则
+  # 将并击编码（排序后的按键组合）转换为拼音的规则
   algebra:
-    # 第一步：将物理按键映射为盲文点位编号
-    # S→3, D→2, F→1, J→4, K→5, L→6
-    - "xlit|sdfjkl|321456|"
+    # ====================================
+    # 声母 (Initials) - 按键组合 → 拼音
+    # ====================================
+    # 排列顺序：按点数从多到少，避免短模式先匹配
 
-    # === 声母规则 ===
-    # 先处理多点组合的声母（从多到少排列，避免冲突）
-    # zh = dots 12345
-    - "xform/^12345/zh/"
-    # ch = dots 1235
-    - "xform/^1235/ch/"
-    # sh = dots 1234 (注意：和 p 相同点位，靠后续韵母区分)
-    - "xform/^1234/sh/"
-    # t = dots 2345
-    - "xform/^2345/t/"
-    # d = dots 145
-    - "xform/^145/d/"
-    # n = dots 1345
-    - "xform/^1345/n/"
-    # g = dots 1245 (也用于 j，靠韵母区分)
-    - "xform/^1245/g/"
-    # p = dots 1234 (和 sh 相同，靠韵母区分)
-    # b = dots 12
-    - "xform/^12/b/"
-    # l = dots 123
-    - "xform/^123/l/"
-    # f = dots 124
-    - "xform/^124/f/"
-    # h = dots 125 (也用于 x，靠韵母区分)
-    - "xform/^125/h/"
-    # k = dots 13 (也用于 q，靠韵母区分)
-    - "xform/^13/k/"
-    # m = dots 134
-    - "xform/^134/m/"
-    # z = dots 1356
-    - "xform/^1356/z/"
-    # c = dots 14
-    - "xform/^14/c/"
-    # s = dots 234
-    - "xform/^234/s/"
-    # r = dots 1235 (和 ch 相同，靠韵母区分)
+    # 全部6键 = ü (dots 123456)
+    - "xform/^sdfjkl$/yu/"
 
-    # === 韵母规则（单独输入时） ===
-    # er = dots 12456
-    - "xform/^12456$/er/"
-    # u = dots 13456
-    - "xform/^13456$/wu/"
-    # a = dots 15
-    - "xform/^15$/a/"
-    # o = dots 135
-    - "xform/^135$/o/"
-    # e = dots 156
-    - "xform/^156$/e/"
-    # ai = dots 246
-    - "xform/^246$/ai/"
-    # ei = dots 2346
-    - "xform/^2346$/ei/"
-    # ao = dots 235
-    - "xform/^235$/ao/"
-    # ou = dots 1246
-    - "xform/^1246$/ou/"
-    # an = dots 2456
-    - "xform/^2456$/an/"
-    # en = dots 25
-    - "xform/^25$/en/"
-    # ang = dots 2356
-    - "xform/^2356$/ang/"
-    # eng = dots 23456
-    - "xform/^23456$/eng/"
-    # i = dots 24
-    - "xform/^24$/yi/"
+    # 5键组合
+    - "xform/^sdfjk$/zh/" # dots 12345
+    - "xform/^sfjkl$/wu/" # dots 13456 = u (零声母 wu)
+    - "xform/^dfjkl$/er/" # dots 12456
 
-    # 空格键单独按下时产生空格
-    - "xform/^$//"
+    # 4键组合
+    - "xform/^sdfj$/sh/" # dots 1234 (sh 优先于 p)
+    - "xform/^sdfk$/ch/" # dots 1235 (ch 优先于 r)
+    - "xform/^sdjk$/t/" # dots 2345 (t 优先于 ong)
+    - "xform/^sfjk$/n/" # dots 1345
+    - "xform/^dfjk$/g/" # dots 1245 (g/j 靠韵母区分)
+    - "xform/^fjkl$/ian/" # dots 1456
+    - "xform/^djkl$/an/" # dots 2456
+    - "xform/^sdkl$/ang/" # dots 2356
+    - "xform/^sdjl$/ei/" # dots 2346
+    - "xform/^sfjl$/iong/" # dots 1346
+    - "xform/^sdfl$/ua/" # dots 1236
+    - "xform/^sdfkl$/uo/" # dots 12356
+    - "xform/^sfkl$/z/" # dots 1356
 
-  # 并击完成后套用的格式
+    # 3键组合
+    - "xform/^sdf$/l/" # dots 123
+    - "xform/^sfj$/m/" # dots 134
+    - "xform/^dfj$/f/" # dots 124
+    - "xform/^dfk$/h/" # dots 125 (h/x 靠韵母区分)
+    - "xform/^fjk$/d/" # dots 145
+    - "xform/^sdj$/s/" # dots 234
+    - "xform/^sfk$/o/" # dots 135
+    - "xform/^sdk$/ao/" # dots 235
+    - "xform/^djl$/ai/" # dots 246
+    - "xform/^dfl$/ie/" # dots 126
+    - "xform/^fjl$/iao/" # dots 146
+    - "xform/^sfl$/iou/" # dots 136
+    - "xform/^djk$/ia/" # dots 245
+    - "xform/^fkl$/e/" # dots 156
+    - "xform/^dkl$/uan/" # dots 256
+    - "xform/^dfkl$/uen/" # dots 1256
+    - "xform/^dfjl$/ou/" # dots 1246
+    - "xform/^sdl$/uei/" # dots 236
+
+    # 2键组合
+    - "xform/^df$/b/" # dots 12
+    - "xform/^sf$/k/" # dots 13 (k/q 靠韵母区分)
+    - "xform/^fj$/c/" # dots 14
+    - "xform/^fk$/a/" # dots 15
+    - "xform/^dj$/i/" # dots 24 → yi
+    - "xform/^dk$/en/" # dots 25
+    - "xform/^dl$/uang/" # dots 26
+    - "xform/^fl$/in/" # dots 16
+    - "xform/^jl$/iao/" # dots 46 (补充)
+
+    # 单键 = 产生空格或无效
+    - "xform/^s$//"
+    - "xform/^d$//"
+    - "xform/^f$//"
+    - "xform/^j$//"
+    - "xform/^k$//"
+    - "xform/^l$//"
+
+  # 并击完成后套用的格式（追加隔音符号）
   output_format:
-    # 追加隔音符号，让拼音引擎正确切分
     - "xform/^([a-z]+)$/$1'/"
-  # 并击过程中显示的提示格式（显示点位）
+  # 并击过程中显示的提示（显示点位符号）
   prompt_format:
     - "xlit|sdfjkl|③②①④⑤⑥|"
 
