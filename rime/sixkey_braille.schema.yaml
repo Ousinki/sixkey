@@ -1,0 +1,169 @@
+# Rime schema
+# encoding: utf-8
+#
+# SixKey 盲文打字 (Braille to Text)
+# 使用 SDF-JKL 并击输入盲文，输出中文
+#
+
+schema:
+  schema_id: sixkey_braille
+  name: "SixKey 盲文打字"
+  version: "1.0"
+  author:
+    - SixKey Project
+  description: |
+    使用 SDF-JKL 六键并击输入盲文。
+    S=3点 D=2点 F=1点 J=4点 K=5点 L=6点
+    并击产生拼音，通过拼音输入中文。
+  dependencies:
+    - luna_pinyin
+
+switches:
+  - name: ascii_mode
+    reset: 0
+    states: [中文, 西文]
+  - name: simplification
+    reset: 1
+    states: [漢字, 汉字]
+
+engine:
+  processors:
+    - ascii_composer
+    - recognizer
+    - chord_composer
+    - key_binder
+    - speller
+    - punctuator
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - script_translator
+  filters:
+    - simplifier
+    - uniquifier
+
+chord_composer:
+  # 并击所使用的按键，按字母表排序定义
+  # 击键虽有先后，形成并击时一律按此顺序排列
+  alphabet: "sdfjkl"
+  # 将并击编码转换为拼音的规则
+  algebra:
+    # 第一步：将物理按键映射为盲文点位编号
+    # S→3, D→2, F→1, J→4, K→5, L→6
+    - "xlit|sdfjkl|321456|"
+
+    # === 声母规则 ===
+    # 先处理多点组合的声母（从多到少排列，避免冲突）
+    # zh = dots 12345
+    - "xform/^12345/zh/"
+    # ch = dots 1235
+    - "xform/^1235/ch/"
+    # sh = dots 1234 (注意：和 p 相同点位，靠后续韵母区分)
+    - "xform/^1234/sh/"
+    # t = dots 2345
+    - "xform/^2345/t/"
+    # d = dots 145
+    - "xform/^145/d/"
+    # n = dots 1345
+    - "xform/^1345/n/"
+    # g = dots 1245 (也用于 j，靠韵母区分)
+    - "xform/^1245/g/"
+    # p = dots 1234 (和 sh 相同，靠韵母区分)
+    # b = dots 12
+    - "xform/^12/b/"
+    # l = dots 123
+    - "xform/^123/l/"
+    # f = dots 124
+    - "xform/^124/f/"
+    # h = dots 125 (也用于 x，靠韵母区分)
+    - "xform/^125/h/"
+    # k = dots 13 (也用于 q，靠韵母区分)
+    - "xform/^13/k/"
+    # m = dots 134
+    - "xform/^134/m/"
+    # z = dots 1356
+    - "xform/^1356/z/"
+    # c = dots 14
+    - "xform/^14/c/"
+    # s = dots 234
+    - "xform/^234/s/"
+    # r = dots 1235 (和 ch 相同，靠韵母区分)
+
+    # === 韵母规则（单独输入时） ===
+    # er = dots 12456
+    - "xform/^12456$/er/"
+    # u = dots 13456
+    - "xform/^13456$/wu/"
+    # a = dots 15
+    - "xform/^15$/a/"
+    # o = dots 135
+    - "xform/^135$/o/"
+    # e = dots 156
+    - "xform/^156$/e/"
+    # ai = dots 246
+    - "xform/^246$/ai/"
+    # ei = dots 2346
+    - "xform/^2346$/ei/"
+    # ao = dots 235
+    - "xform/^235$/ao/"
+    # ou = dots 1246
+    - "xform/^1246$/ou/"
+    # an = dots 2456
+    - "xform/^2456$/an/"
+    # en = dots 25
+    - "xform/^25$/en/"
+    # ang = dots 2356
+    - "xform/^2356$/ang/"
+    # eng = dots 23456
+    - "xform/^23456$/eng/"
+    # i = dots 24
+    - "xform/^24$/yi/"
+
+    # 空格键单独按下时产生空格
+    - "xform/^$//"
+
+  # 并击完成后套用的格式
+  output_format:
+    # 追加隔音符号，让拼音引擎正确切分
+    - "xform/^([a-z]+)$/$1'/"
+  # 并击过程中显示的提示格式（显示点位）
+  prompt_format:
+    - "xlit|sdfjkl|③②①④⑤⑥|"
+
+editor:
+  bindings:
+    BackSpace: back_syllable
+
+speller:
+  alphabet: "zyxwvutsrqponmlkjihgfedcba'"
+  initials: "zyxwvutsrqponmlkjihgfedcba"
+  finals: "'"
+  delimiter: " "
+  algebra:
+    - "xform/^([a-z]+)$/$1'/"
+
+translator:
+  dictionary: luna_pinyin
+  prism: sixkey_braille
+  preedit_format:
+    - "xform/'/ /"
+
+punctuator:
+  import_preset: default
+
+key_binder:
+  import_preset: default
+  bindings:
+    - { when: paging, accept: comma, send: comma }
+    - { when: has_menu, accept: period, send: period }
+
+recognizer:
+  import_preset: default
