@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>盲文对照表 – SixKey Braille</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Helvetica Neue", sans-serif;
+      background: #fff; color: #000;
+      padding: 20px 24px; max-width: 600px; margin: 0 auto; line-height: 1.5;
+    }
+
+    header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    h1 { font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+    h1 .icon { font-size: 20px; opacity: 0.4; }
+    .subtitle { font-size: 10px; color: #999; margin-top: 1px; }
+
+    .theme-btn {
+      width: 28px; height: 28px; border-radius: 50%; border: 1px solid #ddd;
+      background: transparent; color: #666; font-size: 14px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .theme-btn:hover { border-color: #999; }
+
+    h2 { font-size: 13px; font-weight: 700; margin-top: 20px; margin-bottom: 6px; padding-bottom: 3px; border-bottom: 1px solid #eee; }
+    .note { font-size: 11px; color: #999; margin: 4px 0 8px; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th { background: #f7f7f7; font-weight: 600; text-align: left; padding: 3px 6px; border: 1px solid #eee; font-size: 10px; color: #888; }
+    td { padding: 3px 6px; border: 1px solid #eee; vertical-align: middle; }
+    .c-py { font-family: "Courier New", monospace; font-weight: 600; white-space: nowrap; }
+    .c-br { text-align: center; position: relative; width: 32px; }
+    .c-br svg { vertical-align: middle; }
+    .c-br .copy-text { position: absolute; top: 0; left: 0; right: 0; bottom: 0; color: transparent; cursor: text; -webkit-user-select: text; user-select: text; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+    .c-dt { font-family: "Courier New", monospace; color: #999; font-size: 10px; }
+    .c-nt { color: #999; font-size: 10px; }
+
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
+    .grid table { margin-bottom: 0; }
+
+    .dot-diagram { display: flex; gap: 20px; align-items: center; margin: 6px 0 16px; }
+    .dot-diagram .desc { font-size: 11px; color: #888; line-height: 1.7; }
+
+    /* dark */
+    body.dark { background: #111; color: #eee; }
+    body.dark th { background: #1a1a1a; border-color: #333; color: #888; }
+    body.dark td { border-color: #333; }
+    body.dark .c-dt, body.dark .c-nt, body.dark .note { color: #666; }
+    body.dark h2 { border-bottom-color: #333; }
+    body.dark .subtitle { color: #666; }
+    body.dark .theme-btn { border-color: #444; color: #999; }
+    body.dark .dot-diagram .desc { color: #666; }
+    body.dark svg circle[fill="currentColor"] { fill: #eee; }
+    body.dark svg circle[fill="none"] { stroke: #eee; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1><span class="icon">⠿</span>盲文对照表</h1>
+    <div class="subtitle">现行盲文 (GB/T 15720)</div>
+  </div>
+  <button class="theme-btn" id="theme-btn" title="切换主题">☾</button>
+</header>
+
+<!-- 声母 -->
+<h2>声母 Initials</h2>
+<div class="grid">
+  <table id="initials-left"></table>
+  <table id="initials-right"></table>
+</div>
+<div class="note">g/j、k/q、h/x 共用盲文符号，靠后接韵母区分</div>
+
+<!-- 韵母 -->
+<h2>韵母 Finals</h2>
+<div class="grid">
+  <table id="finals-left"></table>
+  <table id="finals-right"></table>
+</div>
+
+<!-- 声调 -->
+<h2>声调 Tones</h2>
+<table id="tones" style="max-width:280px"></table>
+
+<!-- 英文 -->
+<h2>英文字母 English (Grade 1)</h2>
+<div class="grid">
+  <table id="english-left"></table>
+  <table id="english-right"></table>
+</div>
+
+<!-- 特殊规则 -->
+<h2>特殊规则</h2>
+<table id="rules"></table>
+
+<!-- 点位图解 -->
+<h2>点位图解</h2>
+<div class="dot-diagram">
+  <svg width="48" height="72" viewBox="0 0 48 72">
+    <circle cx="14" cy="14" r="7" fill="currentColor"/><text x="14" y="18" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">1</text>
+    <circle cx="34" cy="14" r="7" fill="currentColor"/><text x="34" y="18" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">4</text>
+    <circle cx="14" cy="36" r="7" fill="currentColor"/><text x="14" y="40" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">2</text>
+    <circle cx="34" cy="36" r="7" fill="currentColor"/><text x="34" y="40" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">5</text>
+    <circle cx="14" cy="58" r="7" fill="currentColor"/><text x="14" y="62" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">3</text>
+    <circle cx="34" cy="58" r="7" fill="currentColor"/><text x="34" y="62" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">6</text>
+  </svg>
+  <div class="desc">左列：1, 2, 3（上→下）<br>右列：4, 5, 6（上→下）<br>例：dots 12 = ⠃ (b)</div>
+</div>
+
+<script src="reference.js"></script>
+</body>
+</html>

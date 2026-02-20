@@ -1,6 +1,8 @@
 # SixKey ⠎⠊⠭⠅⠑⠽
 
-A braille input method for macOS that transforms your standard QWERTY keyboard into a 6-key braille typewriter.
+A braille input method for macOS that transforms your standard QWERTY keyboard into a 6-key braille typewriter, complete with a powerful browser extension for real-time Chinese braille web annotations.
+
+![Hover Translation Demo](docs/hover_demo.png)
 
 Type braille characters by pressing **SDF-JKL** as chords — just like a [Perkins Brailler](https://en.wikipedia.org/wiki/Perkins_Brailler).
 

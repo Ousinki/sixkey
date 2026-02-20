@@ -12,7 +12,7 @@
 
 schema:
   schema_id: sixkey_braille
-  name: "SixKey 盲文打字"
+  name: "SixKey"
   version: "2.0"
   author:
     - SixKey Project
@@ -61,67 +61,86 @@ chord_composer:
   # 击键虽有先后，形成并击时一律按此顺序排列
   alphabet: "sdfjkl"
   # 将并击编码（排序后的按键组合）转换为拼音的规则
+  # 键位：S=dot3 D=dot2 F=dot1 J=dot4 K=dot5 L=dot6
+  # 基于现行盲文标准 (GB/T 15720)，与 braille.js 一致
   algebra:
     # ====================================
-    # 声母 (Initials) - 按键组合 → 拼音
+    # 6键 (1 种)
     # ====================================
-    # 排列顺序：按点数从多到少，避免短模式先匹配
+    - "xform/^sdfjkl$/ua/" # dots 123456 = ua(⠿)
 
-    # 全部6键 = ü (dots 123456)
-    - "xform/^sdfjkl$/yu/"
+    # ====================================
+    # 5键 (6 种)
+    # ====================================
+    - "xform/^sdfjk$/ch/" # dots 12345 = ch(⠟)
+    - "xform/^sdfjl$/yuan/" # dots 12346 = üan/van(⠯)
+    - "xform/^sdfkl$/ou/" # dots 12356 = ou(⠷)
+    - "xform/^sfjkl$/uai/" # dots 13456 = uai(⠽)
+    - "xform/^dfjkl$/uan/" # dots 12456 = uan(⠻)
+    - "xform/^sdjkl$/yue/" # dots 23456 = üe/ve(⠾)
 
-    # 5键组合
-    - "xform/^sdfjk$/zh/" # dots 12345
-    - "xform/^sfjkl$/wu/" # dots 13456 = u (零声母 wu)
-    - "xform/^dfjkl$/er/" # dots 12456
+    # ====================================
+    # 4键 (15 种)
+    # ====================================
+    - "xform/^sdfj$/p/" # dots 1234 = p(⠏)
+    - "xform/^sdfk$/er/" # dots 1235 = er(⠗)
+    - "xform/^sdfl$/an/" # dots 1236 = an(⠧)
+    - "xform/^sfjk$/n/" # dots 1345 = n(⠝)
+    - "xform/^sfjl$/iang/" # dots 1346 = iang(⠭)
+    - "xform/^sfkl$/z/" # dots 1356 = z(⠵)
+    - "xform/^dfjk$/g/" # dots 1245 = g/j(⠛) 靠韵母区分
+    - "xform/^dfjl$/ia/" # dots 1246 = ia(⠫)
+    - "xform/^dfkl$/iou/" # dots 1256 = iou(⠳)
+    - "xform/^sdjk$/t/" # dots 2345 = t(⠞)
+    - "xform/^sdjl$/ei/" # dots 2346 = ei(⠮)
+    - "xform/^sdkl$/uang/" # dots 2356 = uang(⠶)
+    - "xform/^sjkl$/eng/" # dots 3456 = eng(⠼)
+    - "xform/^djkl$/uei/" # dots 2456 = uei/ui(⠺)
+    - "xform/^fjkl$/iong/" # dots 1456 = iong(⠹)
 
-    # 4键组合
-    - "xform/^sdfj$/sh/" # dots 1234 (sh 优先于 p)
-    - "xform/^sdfk$/ch/" # dots 1235 (ch 优先于 r)
-    - "xform/^sdjk$/t/" # dots 2345 (t 优先于 ong)
-    - "xform/^sfjk$/n/" # dots 1345
-    - "xform/^dfjk$/g/" # dots 1245 (g/j 靠韵母区分)
-    - "xform/^fjkl$/ian/" # dots 1456
-    - "xform/^djkl$/an/" # dots 2456
-    - "xform/^sdkl$/ang/" # dots 2356
-    - "xform/^sdjl$/ei/" # dots 2346
-    - "xform/^sfjl$/iong/" # dots 1346
-    - "xform/^sdfl$/ua/" # dots 1236
-    - "xform/^sdfkl$/uo/" # dots 12356
-    - "xform/^sfkl$/z/" # dots 1356
+    # ====================================
+    # 3键 (20 种)
+    # ====================================
+    - "xform/^sdf$/l/" # dots 123 = l(⠇)
+    - "xform/^sfj$/m/" # dots 134 = m(⠍)
+    - "xform/^sfk$/uo/" # dots 135 = uo(⠕)
+    - "xform/^sfl$/u/" # dots 136 = u(⠥)
+    - "xform/^dfj$/f/" # dots 124 = f(⠋)
+    - "xform/^dfk$/h/" # dots 125 = h/x(⠓) 靠韵母区分
+    - "xform/^dfl$/in/" # dots 126 = in(⠣)
+    - "xform/^fjk$/d/" # dots 145 = d(⠙)
+    - "xform/^fjl$/ian/" # dots 146 = ian(⠩)
+    - "xform/^fkl$/sh/" # dots 156 = sh(⠱)
+    - "xform/^sdj$/s/" # dots 234 = s(⠎)
+    - "xform/^sdk$/ao/" # dots 235 = ao(⠖)
+    - "xform/^sdl$/ang/" # dots 236 = ang(⠦)
+    - "xform/^sjk$/iao/" # dots 345 = iao(⠜)
+    - "xform/^sjl$/v/" # dots 346 = ü/v(⠬)
+    - "xform/^skl$/en/" # dots 356 = en(⠴)
+    - "xform/^djk$/r/" # dots 245 = r(⠚)
+    - "xform/^djl$/ai/" # dots 246 = ai(⠪)
+    - "xform/^dkl$/ong/" # dots 256 = ong(⠲)
+    - "xform/^jkl$/yun/" # dots 456 = ün/vn(⠸)
 
-    # 3键组合
-    - "xform/^sdf$/l/" # dots 123
-    - "xform/^sfj$/m/" # dots 134
-    - "xform/^dfj$/f/" # dots 124
-    - "xform/^dfk$/h/" # dots 125 (h/x 靠韵母区分)
-    - "xform/^fjk$/d/" # dots 145
-    - "xform/^sdj$/s/" # dots 234
-    - "xform/^sfk$/o/" # dots 135
-    - "xform/^sdk$/ao/" # dots 235
-    - "xform/^djl$/ai/" # dots 246
-    - "xform/^dfl$/ie/" # dots 126
-    - "xform/^fjl$/iao/" # dots 146
-    - "xform/^sfl$/iou/" # dots 136
-    - "xform/^djk$/ia/" # dots 245
-    - "xform/^fkl$/e/" # dots 156
-    - "xform/^dkl$/uan/" # dots 256
-    - "xform/^dfkl$/uen/" # dots 1256
-    - "xform/^dfjl$/ou/" # dots 1246
-    - "xform/^sdl$/uei/" # dots 236
+    # ====================================
+    # 2键 (15 种)
+    # ====================================
+    - "xform/^df$/b/" # dots 12 = b(⠃)
+    - "xform/^sf$/k/" # dots 13 = k/q(⠅) 靠韵母区分
+    - "xform/^fj$/c/" # dots 14 = c(⠉)
+    - "xform/^fk$/ie/" # dots 15 = ie(⠑)
+    - "xform/^fl$/ing/" # dots 16 = ing(⠡)
+    - "xform/^dj$/i/" # dots 24 = i(⠊)
+    - "xform/^dk$/un/" # dots 25 = un/uen(⠒)
+    - "xform/^dl$/e/" # dots 26 = o/e(⠢) 默认输出 e
+    - "xform/^sj$/zh/" # dots 34 = zh(⠌)
+    - "xform/^sk$/a/" # dots 35 = a(⠔)
+    - "xform/^sl$/yet/" # dots 36 = (未使用)
+    - "xform/^jk$/yet/" # dots 45 = (未使用)
+    - "xform/^jl$/yet/" # dots 46 = (未使用)
+    - "xform/^kl$/yet/" # dots 56 = (未使用)
 
-    # 2键组合
-    - "xform/^df$/b/" # dots 12
-    - "xform/^sf$/k/" # dots 13 (k/q 靠韵母区分)
-    - "xform/^fj$/c/" # dots 14
-    - "xform/^fk$/a/" # dots 15
-    - "xform/^dj$/i/" # dots 24 → yi
-    - "xform/^dk$/en/" # dots 25
-    - "xform/^dl$/uang/" # dots 26
-    - "xform/^fl$/in/" # dots 16
-    - "xform/^jl$/iao/" # dots 46 (补充)
-
-    # 单键 = 产生空格或无效
+    # 单键 = 无效
     - "xform/^s$//"
     - "xform/^d$//"
     - "xform/^f$//"
@@ -129,9 +148,8 @@ chord_composer:
     - "xform/^k$//"
     - "xform/^l$//"
 
-  # 并击完成后套用的格式（追加隔音符号）
-  output_format:
-    - "xform/^([a-z]+)$/$1'/"
+  # 并击完成后套用的格式（不加隔音符，让声母韵母自然拼接）
+  output_format: {}
   # 并击过程中显示的提示（显示点位符号）
   prompt_format:
     - "xlit|sdfjkl|③②①④⑤⑥|"
@@ -141,18 +159,17 @@ editor:
     BackSpace: back_syllable
 
 speller:
-  alphabet: "zyxwvutsrqponmlkjihgfedcba'"
-  initials: "zyxwvutsrqponmlkjihgfedcba"
-  finals: "'"
+  alphabet: "zyxwvutsrqponmlkjihgfedcba"
   delimiter: " "
+  # o/e 在盲文中共用 dots 26，并击默认输出 e
+  # 以下规则允许 b/p/m/f + e 匹配词典中的 b/p/m/f + o
   algebra:
-    - "xform/^([a-z]+)$/$1'/"
+    - derive/^([bpmf])o$/$1e/
 
 translator:
   dictionary: luna_pinyin
   prism: sixkey_braille
-  preedit_format:
-    - "xform/'/ /"
+  preedit_format: {}
 
 punctuator:
   import_preset: default

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>盲文转换测试</title>
+  <style>
+    body { font-family: -apple-system, sans-serif; padding: 24px; max-width: 900px; margin: 0 auto; }
+    h1 { color: #7c3aed; }
+    table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+    th, td { border: 1px solid #d4d4d8; padding: 8px 12px; text-align: left; }
+    th { background: #f4f4f5; font-size: 13px; }
+    .braille { font-size: 22px; color: #7c3aed; }
+    .pass { color: #16a34a; font-weight: bold; }
+    .fail { color: #dc2626; font-weight: bold; }
+    #summary { font-size: 18px; margin: 16px 0; padding: 16px; border-radius: 8px; }
+    .summary-pass { background: #dcfce7; border: 1px solid #16a34a; }
+    .summary-fail { background: #fef2f2; border: 1px solid #dc2626; }
+    .dots { font-size: 11px; color: #888; font-family: monospace; }
+  </style>
+</head>
+<body>
+  <h1>⠿ 盲文转换引擎测试 (现行盲文标准)</h1>
+  <div id="summary"></div>
+  <table>
+    <thead>
+      <tr>
+        <th>汉字</th>
+        <th>拼音</th>
+        <th>期望盲文</th>
+        <th>实际盲文</th>
+        <th>分解</th>
+        <th>结果</th>
+      </tr>
+    </thead>
+    <tbody id="results"></tbody>
+  </table>
+
+  <script src="lib/pinyin-pro.min.js"></script>
+  <script src="braille.js"></script>
+  <script>
+    // 现行盲文标准测试用例
+    // 参考: 教育部 moe.gov.cn 现行盲文方案
+    const testCases = [
+      // 基础声母+韵母
+      { char: '你', expectedBraille: '⠝⠊', desc: 'n(1345)+i(24)' },
+      { char: '好', expectedBraille: '⠓⠖', desc: 'h(125)+ao(235)' },
+      { char: '天', expectedBraille: '⠞⠩', desc: 't(2345)+ian(146)' },
+      { char: '大', expectedBraille: '⠙⠔', desc: 'd(145)+a(35)' },
+      { char: '人', expectedBraille: '⠚⠴', desc: 'r(245)+en(356)' },
+      { char: '中', expectedBraille: '⠌⠲', desc: 'zh(34)+ong(256)' },
+      { char: '国', expectedBraille: '⠛⠕', desc: 'g(1245)+uo(135)' },
+      { char: '学', expectedBraille: '⠓⠾', desc: 'x(125)+ve(23456), xue→üe' },
+      { char: '是', expectedBraille: '⠱', desc: 'sh(156), 空韵省略-i' },
+      // 零声母
+      { char: '我', expectedBraille: '⠕', desc: 'wo→uo(135)' },
+      { char: '一', expectedBraille: '⠊', desc: 'yi→i(24)' },
+      { char: '月', expectedBraille: '⠾', desc: 'yue→ve(23456)' },
+      { char: '云', expectedBraille: '⠸', desc: 'yun→vn/ün(456)' },
+      // 翘舌音
+      { char: '吃', expectedBraille: '⠟', desc: 'ch(12345), 空韵省略-i' },
+      { char: '知', expectedBraille: '⠌', desc: 'zh(34), 空韵省略-i' },
+      { char: '日', expectedBraille: '⠚', desc: 'r(245), 空韵省略-i' },
+      // 复合韵母
+      { char: '飞', expectedBraille: '⠋⠮', desc: 'f(124)+ei(2346)' },
+      { char: '看', expectedBraille: '⠅⠧', desc: 'k(13)+an(1236)' },
+      { char: '风', expectedBraille: '⠋⠼', desc: 'f(124)+eng(3456)' },
+    ];
+
+    const tbody = document.getElementById('results');
+    let passCount = 0;
+    let failCount = 0;
+
+    testCases.forEach(tc => {
+      const results = BrailleConverter.textToBraille(tc.char, false);
+      const actual = results[0]?.brailleResult?.braille || '(无)';
+      const actualPinyin = results[0]?.pinyin || '(无)';
+      const cells = results[0]?.brailleResult?.cells || [];
+      const pass = actual === tc.expectedBraille;
+
+      if (pass) passCount++;
+      else failCount++;
+
+      const cellInfo = cells.map(c => `${c.label}=${c.char}(${c.dots})`).join(' + ');
+
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${tc.char}</td>
+        <td>${actualPinyin}</td>
+        <td class="braille">${tc.expectedBraille}</td>
+        <td class="braille">${actual}</td>
+        <td class="dots">${cellInfo} | ${tc.desc}</td>
+        <td class="${pass ? 'pass' : 'fail'}">${pass ? '✓' : '✗'}</td>
+      `;
+      tbody.appendChild(row);
+    });
+
+    const summary = document.getElementById('summary');
+    const allPass = failCount === 0;
+    summary.className = allPass ? 'summary-pass' : 'summary-fail';
+    summary.textContent = `测试结果: ${passCount}/${testCases.length} 通过` + (failCount > 0 ? `, ${failCount} 失败` : ' ✓ 全部通过');
+  </script>
+</body>
+</html>

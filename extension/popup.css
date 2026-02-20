@@ -1,0 +1,130 @@
+/**
+ * 盲文悬浮注音 - 纯黑白极简
+ */
+
+#braille-popup-dict {
+  position: fixed;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  z-index: 2147483647;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Helvetica Neue", sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #000;
+  width: auto;
+  min-width: 180px;
+  max-width: 380px;
+  overflow: hidden;
+  transition: opacity 0.15s ease;
+  pointer-events: auto;
+}
+
+.braille-popup-main { padding: 10px 14px; }
+
+#braille-popup-dict .braille-word-section {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 6px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #eee;
+}
+#braille-popup-dict .braille-word-text {
+  font-size: 20px;
+  font-weight: 700;
+  color: #000;
+}
+#braille-popup-dict .braille-full-text {
+  font-size: 28px;
+  color: #000;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+}
+
+#braille-popup-dict .braille-detail-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+#braille-popup-dict .braille-char-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+}
+#braille-popup-dict .braille-char-row:not(:last-child) {
+  border-bottom: 1px solid #f5f5f5;
+}
+#braille-popup-dict .braille-char-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 36px;
+}
+#braille-popup-dict .braille-char {
+  font-size: 16px;
+  font-weight: 700;
+  color: #000;
+}
+#braille-popup-dict .braille-pinyin {
+  font-size: 11px;
+  color: #999;
+  font-family: "Courier New", Consolas, monospace;
+}
+
+#braille-popup-dict .braille-cells {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+#braille-popup-dict .braille-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  background: #f7f7f7;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  padding: 3px 6px;
+  min-width: 34px;
+}
+#braille-popup-dict .braille-cell:hover { background: #eee; }
+#braille-popup-dict .braille-cell-char {
+  font-size: 26px;
+  color: #000;
+  line-height: 1;
+}
+#braille-popup-dict .braille-cell-dots {
+  font-size: 9px;
+  color: #bbb;
+  font-family: "Courier New", Consolas, monospace;
+  font-weight: 600;
+}
+#braille-popup-dict .braille-cell-label {
+  font-size: 10px;
+  color: #666;
+  font-weight: 500;
+  font-family: "Courier New", Consolas, monospace;
+}
+
+/* ===== 黑夜 ===== */
+#braille-popup-dict.theme-dark {
+  background: #111;
+  border-color: #333;
+  color: #eee;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+#braille-popup-dict.theme-dark .braille-word-section { border-bottom-color: #333; }
+#braille-popup-dict.theme-dark .braille-word-text { color: #fff; }
+#braille-popup-dict.theme-dark .braille-full-text { color: #ddd; }
+#braille-popup-dict.theme-dark .braille-char { color: #fff; }
+#braille-popup-dict.theme-dark .braille-pinyin { color: #888; }
+#braille-popup-dict.theme-dark .braille-char-row:not(:last-child) { border-bottom-color: #222; }
+#braille-popup-dict.theme-dark .braille-cell { background: #1a1a1a; border-color: #333; }
+#braille-popup-dict.theme-dark .braille-cell:hover { background: #333; }
+#braille-popup-dict.theme-dark .braille-cell-char { color: #eee; }
+#braille-popup-dict.theme-dark .braille-cell-dots { color: #555; }
+#braille-popup-dict.theme-dark .braille-cell-label { color: #999; }

@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>盲文悬浮注音</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+
+      body {
+        width: 300px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Helvetica Neue", sans-serif;
+        background: #fff;
+        color: #000;
+      }
+
+      /* 标题栏 */
+      .popup-header {
+        padding: 12px 16px;
+        background: #000;
+        color: #fff;
+        position: relative;
+      }
+      .popup-title {
+        font-size: 16px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .popup-title .braille-icon { font-size: 18px; opacity: 0.6; }
+      .popup-subtitle {
+        font-size: 10px;
+        opacity: 0.4;
+        margin-top: 2px;
+      }
+
+      /* 右上角主题按钮 */
+      .theme-toggle {
+        position: absolute;
+        top: 10px;
+        right: 12px;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        border: 1px solid rgba(255,255,255,0.3);
+        background: transparent;
+        color: #fff;
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.15s ease;
+        line-height: 1;
+      }
+      .theme-toggle:hover { border-color: #fff; background: rgba(255,255,255,0.1); }
+
+      /* 设置区 */
+      .popup-body { padding: 12px 16px; }
+
+      .setting-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+      }
+      .setting-row:not(:last-child) { border-bottom: 1px solid #eee; }
+      .setting-label { font-size: 13px; font-weight: 600; }
+      .setting-desc { font-size: 10px; color: #999; margin-top: 1px; }
+
+      /* 开关 */
+      .toggle { position: relative; width: 40px; height: 22px; cursor: pointer; flex-shrink: 0; }
+      .toggle input { opacity: 0; width: 0; height: 0; }
+      .toggle-slider {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: #ddd;
+        border-radius: 22px;
+        transition: background 0.2s;
+      }
+      .toggle-slider::before {
+        content: "";
+        position: absolute;
+        width: 18px; height: 18px;
+        left: 2px; top: 2px;
+        background: #fff;
+        border-radius: 50%;
+        transition: transform 0.2s;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+      }
+      .toggle input:checked + .toggle-slider { background: #000; }
+      .toggle input:checked + .toggle-slider::before { transform: translateX(18px); }
+
+      /* 示例 */
+      .demo-section {
+        margin-top: 6px;
+        padding: 10px;
+        background: #f7f7f7;
+        border: 1px solid #eee;
+        border-radius: 4px;
+        text-align: center;
+      }
+      .demo-text { font-size: 12px; color: #999; margin-bottom: 6px; }
+      .demo-braille { font-size: 24px; color: #000; letter-spacing: 2px; margin-bottom: 2px; }
+      .demo-label { font-size: 10px; color: #bbb; font-family: "Courier New", monospace; }
+
+      /* ===== 黑夜主题 ===== */
+      body.theme-dark { background: #111; color: #eee; }
+      body.theme-dark .popup-header { background: #000; }
+      body.theme-dark .theme-toggle { border-color: rgba(255,255,255,0.2); }
+      body.theme-dark .setting-row:not(:last-child) { border-bottom-color: #333; }
+      body.theme-dark .setting-label { color: #eee; }
+      body.theme-dark .setting-desc { color: #666; }
+      body.theme-dark .toggle-slider { background: #444; }
+      body.theme-dark .toggle input:checked + .toggle-slider { background: #fff; }
+      body.theme-dark .toggle input:checked + .toggle-slider::before { background: #111; }
+      body.theme-dark .demo-section { background: #1a1a1a; border-color: #333; }
+      body.theme-dark .demo-text { color: #666; }
+      body.theme-dark .demo-braille { color: #eee; }
+      body.theme-dark .demo-label { color: #555; }
+    </style>
+  </head>
+  <body>
+    <div class="popup-header">
+      <div class="popup-title">
+        <span class="braille-icon">⠿</span>
+        盲文悬浮注音
+      </div>
+      <div class="popup-subtitle">SixKey Braille – 现行盲文</div>
+      <button class="theme-toggle" id="theme-toggle" title="切换主题">☀</button>
+    </div>
+
+    <div class="popup-body">
+      <div class="setting-row">
+        <div>
+          <div class="setting-label">启用</div>
+          <div class="setting-desc">开启/关闭悬浮注音</div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="toggle-enabled" checked />
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-row">
+        <div>
+          <div class="setting-label">显示声调</div>
+          <div class="setting-desc">在盲文中添加声调符号</div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="toggle-tone" />
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-row">
+        <div>
+          <div class="setting-label">显示点位号</div>
+          <div class="setting-desc">在盲文符号下方显示点位编号</div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="toggle-dots" checked />
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-row">
+        <div>
+          <div class="setting-label">英文盲文</div>
+          <div class="setting-desc">悬停英文单词时显示国际盲文</div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="toggle-english" />
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-row">
+        <div>
+          <div class="setting-label">中文详情折叠</div>
+          <div class="setting-desc">默认折叠中文逐字详情</div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="toggle-fold-zh" />
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-row">
+        <div>
+          <div class="setting-label">英文详情折叠</div>
+          <div class="setting-desc">默认折叠英文逐字母详情</div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="toggle-fold-en" checked />
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="demo-section">
+        <div class="demo-text">示例：你好</div>
+        <div class="demo-braille" id="demo-braille">⠝⠊ ⠓⠖</div>
+        <div class="demo-label">nǐ hǎo</div>
+      </div>
+    </div>
+
+    <div style="padding:8px 16px 12px;text-align:center;border-top:1px solid #eee">
+      <a href="reference.html" target="_blank" id="open-reference"
+         style="font-size:11px;color:#999;text-decoration:none">
+        📖 盲文对照表
+      </a>
+      <span style="margin:0 6px;color:#ddd">|</span>
+      <a href="converter.html" target="_blank"
+         style="font-size:11px;color:#999;text-decoration:none">
+        🔄 盲文转换器
+      </a>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
